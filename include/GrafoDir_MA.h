@@ -9,16 +9,18 @@ template <class A>
 class GrafoDir_MA
 {
     public:
-        GrafoDir_MA();
-        virtual ~GrafoDir_MA();
+        GrafoDir_MA(){}
+        virtual ~GrafoDir_MA(){}
         A *MatAris;
         string *ListaEtiquetas;
         int UltimoLleno;
+        int maximo;
 
         void Iniciar(int M){
             MatAris = new A[M][M];
             ListaEtiquetas = new string[M];
             UltimoLleno=-1;
+            maximo=M;
         }
 
         void Destruir(){
@@ -38,10 +40,10 @@ class GrafoDir_MA
         }
 
         void AgregVert(string etiq){
-            if(UltimoLleno<ListaEtiquetas->length()){
+            if(UltimoLleno<maximo){
                 UltimoLleno++;
                 ListaEtiquetas[UltimoLleno] = etiq;
-                for(int x=0;x<ListaEtiquetas->length();x++){
+                for(int x=0;x<maximo;x++){
                     MatAris[x][UltimoLleno]=0;
                     MatAris[UltimoLleno][x]=0;
                 }
@@ -121,21 +123,20 @@ class GrafoDir_MA
             }
         }
 
-        string MuestreDatos(){
-            stringstream datos;
-            datos<<"Lista de etiquetas: "<<endl;
+        void MuestreDatos(){
+            cout<<"Lista de etiquetas: "<<endl;
             for(int x=0;x<=UltimoLleno;x++){
-                datos<<ListaEtiquetas[x]<<" "<<end;
+                cout<<ListaEtiquetas[x]<<" "<<endl;
             }
-            datos<<endl;
-            datos<<"Matriz de adyacencia: "<<endl;
+            cout<<endl;
+            cout<<"Matriz de adyacencia: "<<endl;
             for(int z=0;z<=UltimoLleno;z++){
                 for(int y=0;y<=UltimoLleno;y++){
-                    datos<<"\t"<<MatAris[x][y]<<"\t"<<end;
+                    cout<<"\t"<<MatAris[z][y]<<"\t"<<end;
                 }
-                datos<<endl;
+                cout<<endl;
             }
-            datos<<endl;
+            cout<<endl;
         }
 
     protected:
