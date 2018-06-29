@@ -10,3 +10,26 @@
 	<string>
 	<iostream>
 
+1530230242 source:c:\users\crist\desktop\tareaprogramada2-master\main.cpp
+	<iostream>
+	<GrafoDir_MA.h>
+
+1530230242 c:\users\crist\desktop\tareaprogramada2-master\include\grafodir_ma.h
+	<string>
+	<iostream>
+
+1530230242 source:c:\users\crist\desktop\tareaprogramada2-master\src\grafodir_ma.cpp
+	"GrafoDir_MA.h"
+
+1530248446 source:c:\users\crist\desktop\tareaprogramada2-master\src\relacion_lse.cpp
+	"Relacion_LSE.h"
+
+1530249441 c:\users\crist\desktop\tareaprogramada2-master\include\relacion_lse.h
+	"NodoL.h"
+
+1530246641 source:c:\users\crist\desktop\tareaprogramada2-master\src\nodol.cpp
+	"NodoL.h"
+
+1530247755 c:\users\crist\desktop\tareaprogramada2-master\include\nodol.h
+	<utility>
+
