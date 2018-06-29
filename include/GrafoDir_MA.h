@@ -9,28 +9,27 @@ template <class A>
 class GrafoDir_MA
 {
     public:
-        GrafoDir_MA();
-        virtual ~GrafoDir_MA();
-        A *MatAris;
-        string *ListaEtiquetas;
+        GrafoDir_MA(){}
+        virtual ~GrafoDir_MA(){}
+        int maximo=100;
+        int MatAris[100][100];
+        string ListaEtiquetas[100];
         int UltimoLleno;
 
-        void Iniciar(int M){
-            MatAris = new A[M][M];
-            ListaEtiquetas = new string[M];
+        void Iniciar(){
             UltimoLleno=-1;
         }
 
         void Destruir(){
-            UltimoLleno=0;
+            UltimoLleno=-1;
         }
 
         void vaciar(){
-            UltimoLleno=0;
+            UltimoLleno=-1;
         }
 
         bool vacio(){
-            if(UltimoLleno==0){
+            if(UltimoLleno==-1){
                 return true;
             }else{
                 return false;
@@ -38,12 +37,12 @@ class GrafoDir_MA
         }
 
         void AgregVert(string etiq){
-            if(UltimoLleno<ListaEtiquetas->length()){
+            if(UltimoLleno<maximo){
                 UltimoLleno++;
                 ListaEtiquetas[UltimoLleno] = etiq;
-                for(int x=0;x<ListaEtiquetas->length();x++){
-                    MatAris[x][UltimoLleno]=0;
-                    MatAris[UltimoLleno][x]=0;
+                for(int x=0;x<maximo;x++){
+                    MatAris[x][UltimoLleno]=-1;
+                    MatAris[UltimoLleno][x]=-1;
                 }
             }else{
                 cout<<"No hay más campo en el Grafo para agregar Vértices"<<endl;
@@ -52,12 +51,17 @@ class GrafoDir_MA
 
         void ElimVert(int vert){
             for(int x=vert;x<UltimoLleno;x++){ //por terminar
-                ListaEtiquetas[x]=x+1;
+                ListaEtiquetas[x]=ListaEtiquetas[x+1];
             }
-            for(int x=vert;x<UltimoLleno;x++){
-                    MatAris[x][vert]=MatAris[x+1][vert];
-                    MatAris[vert][x]=MatAris[vert][x+1];
+            for (int i = vert; i < UltimoLleno; ++i)
+            {
+                for (int j = 0; j < UltimoLleno; ++j)
+                {
+                    MatAris[i][j]=MatAris[i+1][j];
+                    MatAris[j][i]=MatAris[j][i+1];
+                }
             }
+            UltimoLleno--;
         }
 
         void AgregArist(A peso, int v1, int v2){
@@ -65,7 +69,7 @@ class GrafoDir_MA
         }
 
         void ElimArist(int v1, int v2){
-            MatAris[v1][v2]=0;
+            MatAris[v1][v2]=-1;
         }
 
         string Etiqueta(int vert){
@@ -93,7 +97,7 @@ class GrafoDir_MA
 
         int PrimerVertAdy(int vert){
             for(int x=0;x<=UltimoLleno;x++){
-                if(MatAris[vert][x] != 0){
+                if(MatAris[vert][x] != -1){
                     return x;
                 }
             }
@@ -102,7 +106,7 @@ class GrafoDir_MA
 
         int SteVertAdy(int v1, int v2){
             for(int x=v2;x<=UltimoLleno;x++){
-                if(MatAris[v1][x] != 0){
+                if(MatAris[v1][x] != -1){
                     return x;
                 }
             }
@@ -121,21 +125,20 @@ class GrafoDir_MA
             }
         }
 
-        string MuestreDatos(){
-            stringstream datos;
-            datos<<"Lista de etiquetas: "<<endl;
+        void MuestreDatos(){
+            cout<<"Lista de etiquetas: "<<endl;
             for(int x=0;x<=UltimoLleno;x++){
-                datos<<ListaEtiquetas[x]<<" "<<end;
+                cout<<ListaEtiquetas[x]<<" "<<endl;
             }
-            datos<<endl;
-            datos<<"Matriz de adyacencia: "<<endl;
+            cout<<endl;
+            cout<<"Matriz de adyacencia: "<<endl;
             for(int z=0;z<=UltimoLleno;z++){
                 for(int y=0;y<=UltimoLleno;y++){
-                    datos<<"\t"<<MatAris[x][y]<<"\t"<<end;
+                    cout<<MatAris[z][y]<<"\t";
                 }
-                datos<<endl;
+                cout<<endl;
             }
-            datos<<endl;
+            cout<<endl;
         }
 
     protected:
