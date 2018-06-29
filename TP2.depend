@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1530063240 source:c:\users\b61015\desktop\tareaprogramada2-master\main.cpp
+1530254831 source:c:\users\b61015\desktop\tareaprogramada2-master\main.cpp
 	<iostream>
+	<GrafoDir_MA.h>
 
-1530241913 source:c:\users\b61015\desktop\tareaprogramada2-master\src\grafodir_ma.cpp
+1530251150 source:c:\users\b61015\desktop\tareaprogramada2-master\src\grafodir_ma.cpp
 	"GrafoDir_MA.h"
 
-1530248983 c:\users\b61015\desktop\tareaprogramada2-master\include\grafodir_ma.h
+1530255289 c:\users\b61015\desktop\tareaprogramada2-master\include\grafodir_ma.h
 	<string>
 	<iostream>
 
