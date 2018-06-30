@@ -1,15 +1,16 @@
 #ifndef NODOV_H
 #define NODOV_H
-
-
+#include "NodoA.h"
+class NodoA;
 class NodoV
 {
     public:
-        string label;
-        NodoA *ady;
-        NodoV *vert;
+        int label;
+        NodoA *NextAdy;
+        NodoV *NextVert;
 
         NodoV();
+//        NodoV(string e);
         virtual ~NodoV();
 
     protected:
