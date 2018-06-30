@@ -1,5 +1,6 @@
 #include <iostream>
 #include <GrafoDir_MA.h>
+#include "Relacion_LSE.h"
 
 using namespace std;
 
@@ -31,5 +32,16 @@ int main()
     G.ElimArist(3, 2);
     G.ElimVert(2);
     G.MuestreDatos();
+
+    Relacion_LSE <int, string> R;
+    R.Crear();
+    R.AgregarRelacion(1, "A");
+    R.AgregarRelacion(2, "B");
+    R.AgregarRelacion(3, "C");
+    R.AgregarRelacion(4, "D");
+    R.AgregarRelacion(5, "E");
+    R.MuestreDatos();
+    R.EliminarRelacion(5, "E");
+    R.MuestreDatos();
     return 0;
 }
