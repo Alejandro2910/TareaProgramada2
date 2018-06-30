@@ -1,14 +1,13 @@
 #ifndef NODOA_H
 #define NODOA_H
+#include "NodoV.h"
 
-
-template <class T>class NodoA
+class NodoA
 {
     public:
-
-        T peso;
-        NodoA *ady;
-        NodoV *vert;
+        int label;
+        NodoA *NextAdy;
+        NodoV *NextVert;
 
         NodoA();
         virtual ~NodoA();
