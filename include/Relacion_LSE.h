@@ -1,6 +1,7 @@
 #ifndef RELACION_LSE_H
 #define RELACION_LSE_H
 #include "NodoL.h"
+#include <iostream>
 
 using namespace std;
 
@@ -54,23 +55,25 @@ class Relacion_LSE
                 PrimerElem = new NodoL<A, B>(PreImg, Img);
             }else{
                 NodoL<A, B> *Nuevo = new NodoL<A, B>(PreImg, Img);
-                PrimerElem->ptrSig = PrimerElem;
-                PrimerElem = Nuevo;
-
+                NodoL<A, B> *iter = PrimerElem;
+                while(iter->ptrSig != nullptr){
+                    iter=iter->ptrSig;
+                }
+                iter->ptrSig = Nuevo;
             }
         }
 
-        void EliminarRelacion(std::pair<A, B> dato){
-            if(PrimerElem->elem == dato){
+        void EliminarRelacion(A pre, B img){
+            if(PrimerElem->elem.first == pre && PrimerElem->elem.second == img){
                 NodoL<A, B>* Temp = PrimerElem;
                 PrimerElem = PrimerElem->ptrSig;
                 delete Temp;
             }else{
                 NodoL<A, B>* iterador = PrimerElem;
                 NodoL<A, B>* iteradorAtrasado = PrimerElem;
-                while(iterador->elemento < dato){
+                while(iterador->elem.first != pre && iterador->elem.second != img){
                         iterador = iterador->ptrSig;
-                        if(iterador->elem == dato){
+                        if(iterador->elem.first == pre && iterador->elem.second == img){
                             iteradorAtrasado->ptrSig = iterador->ptrSig;
                             delete iterador;
                             break;
@@ -163,6 +166,15 @@ class Relacion_LSE
                 iter = iter->ptrSig;
             }
             return cont;
+        }
+
+        void MuestreDatos(){
+            cout<<"Lista de Relaciones: "<<endl;
+            NodoL<A, B>* iter = PrimerElem;
+            while(iter != nullptr){
+                cout<<"1. "<<iter->elem.first<<" 2. "<<iter->elem.second<<endl;
+                iter=iter->ptrSig;
+            }
         }
 
     protected:

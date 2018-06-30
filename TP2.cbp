@@ -34,6 +34,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Algoritmos.h" />
 		<Unit filename="include/GrafoDir_LA.h" />
 		<Unit filename="include/GrafoDir_MA.h" />
 		<Unit filename="include/NodoA.h" />
@@ -41,6 +42,7 @@
 		<Unit filename="include/NodoV.h" />
 		<Unit filename="include/Relacion_LSE.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Algoritmos.cpp" />
 		<Unit filename="src/GrafoDir_MA.cpp" />
 		<Unit filename="src/NodoL.cpp" />
 		<Unit filename="src/Relacion_LSE.cpp" />
