@@ -10,35 +10,48 @@
 	<string>
 	<iostream>
 
-1530376642 source:c:\users\crist\desktop\tareaprogramada2-master\main.cpp
+1530766889 source:c:\users\crist\desktop\tareaprogramada2-master\main.cpp
 	<iostream>
-	<GrafoDir_MA.h>
+	"GrafoDir_MA.h"
 	"Relacion_LSE.h"
+	<map>
+	"Diccionario.h"
 
-1530230242 c:\users\crist\desktop\tareaprogramada2-master\include\grafodir_ma.h
+1530395892 c:\users\crist\desktop\tareaprogramada2-master\include\grafodir_ma.h
 	<string>
 	<iostream>
 
-1530230242 source:c:\users\crist\desktop\tareaprogramada2-master\src\grafodir_ma.cpp
+1530395892 source:c:\users\crist\desktop\tareaprogramada2-master\src\grafodir_ma.cpp
 	"GrafoDir_MA.h"
 
-1530248446 source:c:\users\crist\desktop\tareaprogramada2-master\src\relacion_lse.cpp
+1530395892 source:c:\users\crist\desktop\tareaprogramada2-master\src\relacion_lse.cpp
 	"Relacion_LSE.h"
 
-1530376794 c:\users\crist\desktop\tareaprogramada2-master\include\relacion_lse.h
+1530756096 c:\users\crist\desktop\tareaprogramada2-master\include\relacion_lse.h
 	"NodoL.h"
 	<iostream>
 
-1530246641 source:c:\users\crist\desktop\tareaprogramada2-master\src\nodol.cpp
+1530395892 source:c:\users\crist\desktop\tareaprogramada2-master\src\nodol.cpp
 	"NodoL.h"
 
-1530247755 c:\users\crist\desktop\tareaprogramada2-master\include\nodol.h
+1530395892 c:\users\crist\desktop\tareaprogramada2-master\include\nodol.h
 	<utility>
 
-1530374899 source:c:\users\crist\desktop\tareaprogramada2-master\src\algoritmos.cpp
+1530395892 source:c:\users\crist\desktop\tareaprogramada2-master\src\algoritmos.cpp
 	"Algoritmos.h"
 
-1530376091 c:\users\crist\desktop\tareaprogramada2-master\include\algoritmos.h
+1530395892 c:\users\crist\desktop\tareaprogramada2-master\include\algoritmos.h
 	"Relacion_LSE.h"
 	"GrafoDir_MA.h"
+
+1530755698 source:c:\users\crist\desktop\tareaprogramada2-master\src\diccionario.cpp
+	"Diccionario.h"
+
+1530756096 c:\users\crist\desktop\tareaprogramada2-master\include\diccionario.h
+	<NodoD.h>
+
+1530744114 source:c:\users\crist\desktop\tareaprogramada2-master\src\nodod.cpp
+	"NodoD.h"
+
+1530744375 c:\users\crist\desktop\tareaprogramada2-master\include\nodod.h
 
