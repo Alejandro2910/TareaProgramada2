@@ -27,7 +27,7 @@ class Relacion_LSE
                 delete &PrimerElem;
                 PrimerElem=sig;
             }
-            delete this;
+            delete PrimerElem;
         }
 
         void Vaciar()

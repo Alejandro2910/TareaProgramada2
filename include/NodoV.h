@@ -1,13 +1,13 @@
 #ifndef NODOV_H
 #define NODOV_H
 
-
+class NodoA
 class NodoV
 {
     public:
         string label;
-        NodoA *ady;
-        NodoV *vert;
+        NodoA *NextAdy;
+        NodoV *NextVert;
 
         NodoV();
         virtual ~NodoV();
