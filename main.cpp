@@ -4,80 +4,80 @@
 #include <map>
 #include "Diccionario.h"
 
-typedef int VerticeDest;
-typedef int VerticeFuen;
 typedef int Vertice;
-static int VerticeNulo = -1;
 typedef int Peso;
 
 using namespace std;
 
-    GrafoDir_MA<int> G;
-    Diccionario<int> D;
-    map<Vertice, Peso> Distancias;
-    map<Vertice, Vertice> Caminos;
-    map<VerticeFuen, Peso>::iterator iter;
-    map<VerticeFuen, VerticeDest>::iterator iterC;
-    int Menor;
-    int ContVert = 1;
+GrafoDir_MA<int> G;
+Diccionario<int> D;
+map<string, Peso> Distancia;
+map<string, string> Caminos;
+map<string, Peso>::iterator it;
+map<string, string>::iterator itCaminos;
 
-void Dijkstra(Vertice V){
-    Distancias.clear();
+void Algoritmo_Dijkstra(Vertice v){
+    Distancia.clear();
     Caminos.clear();
-    Vertice Actual = G.PrimerVert();
-    Vertice Pivote;
-    Vertice AdyPivot;
-
-    while(Actual != VerticeNulo){
-        if(G.ExisteArista(V, Actual)){
-            Distancias.emplace(Actual, G.Peso(V, Actual));
-            Caminos.emplace(V, Actual);
-        }else if(Actual == V){
-            Distancias.emplace(Actual, 0);
-            Caminos.emplace(V, VerticeNulo);
-        }else{
-            Distancias.emplace(Actual, VerticeNulo);
-            Distancias.emplace(V, -1);
+    Diccionario <Vertice> VerticesRevisados;
+    VerticesRevisados.Crear();
+    Vertice actual = G.PrimerVert();
+    Vertice pivote;
+    Vertice AdyacentePivote;
+    int menor;
+    int n = G.NumVert();
+    while (actual != VerticeNulo)
+    {
+        if (G.ExisteArista(v, actual))
+        {
+            Distancia.insert(make_pair(G.Etiqueta(actual),G.Peso(v, actual)));
+            Caminos.insert(make_pair(G.Etiqueta(actual),G.Etiqueta(v)+"-> "+G.Etiqueta(actual)));
         }
-        Actual = G.SteVert(Actual);
+        else if (v == actual)
+        {
+            Distancia.insert(make_pair(G.Etiqueta(actual),0));
+            Caminos.insert(make_pair(G.Etiqueta(actual),""));
+        }
+        else
+        {
+            Distancia.insert(make_pair(G.Etiqueta(actual),-1));
+            Caminos.insert(make_pair(G.Etiqueta(actual),""));
+        }
+        actual = G.SteVert(actual);
     }
-    D.Agregar(V);
-    Menor = VerticeNulo;
-    while(ContVert <= G.NumVert()){
-        for(iter = Distancias.begin();iter!=Distancias.end();iter++){
-            if((iter->second < Menor && iter->second >= 0) || Menor < 0){
-                if(!D.Pertenece(iter->first)){
-                    Menor = iter->second;
-                    Pivote =  iter->first;
+    VerticesRevisados.Agregar(v);
+    while (n != VerticesRevisados.NumElem())
+    {
+        menor = -1;
+        for (it = Distancia.begin(); it != Distancia.end(); ++it) //Busca el menor camino que no esté listo.
+        {
+            if ((it ->second < menor && it ->second >= 0) || menor < 0)
+            {
+                if (!VerticesRevisados.Pertenece(G.Vert(it->first)))
+                {
+                    menor = it ->second;
+                    pivote = G.Vert(it ->first);
                 }
             }
         }
-        D.Agregar(Pivote);
-        AdyPivot = G.PrimerVertAdy(Pivote);
-        while(AdyPivot != VerticeNulo){
-            iter = Distancias.find(AdyPivot);
-            if(!D.Pertenece(AdyPivot) && (iter->second > (Distancias.find(Pivote)->second + G.Peso(Pivote, AdyPivot))|| iter->second < 0)){
-                iter->second = Distancias.find(Pivote)->second + G.Peso(Pivote, AdyPivot);
-                iterC = Caminos.find(AdyPivot);
-                iterC->second = AdyPivot;
+        VerticesRevisados.Agregar(pivote);
+        AdyacentePivote = G.PrimerVertAdy(pivote);
+        while (AdyacentePivote != VerticeNulo)
+        {
+            it = Distancia.find(G.Etiqueta(AdyacentePivote));
+            if (!VerticesRevisados.Pertenece(AdyacentePivote) && (it ->second > (Distancia.find(G.Etiqueta(pivote))-> second) + G.Peso(pivote, AdyacentePivote) || it ->second < 0))
+            {
+                it ->second = Distancia.find(G.Etiqueta(pivote))-> second + G.Peso(pivote, AdyacentePivote);
+                itCaminos = Caminos.find(G.Etiqueta(AdyacentePivote));
+                itCaminos ->second = Caminos.find(G.Etiqueta(pivote))-> second + "-> " + G.Etiqueta(AdyacentePivote);
             }
-            AdyPivot = G.SteVertAdy(Pivote, AdyPivot);
+            AdyacentePivote = G.SteVertAdy(pivote, AdyacentePivote);
         }
-        cout<<"Resultados Dijkstra:\n"<<endl;
-        for (iterC = Caminos.begin(); iterC != Caminos.end(); ++iterC)
-        {
-            cout << "El camino mas corto de " << G.Etiqueta(V) << " a " << iterC ->first << "tiene un costo de: "<< Distancias.find(iterC->first)->second << endl;
-        }
-        cout<<endl;
-        for (iterC = Caminos.begin(); iterC != Caminos.end(); ++iterC)
-        {
-           cout<<iterC->first<< " ";
-        }
-        cout<<endl;
-        for (iterC = Caminos.begin(); iterC != Caminos.end(); ++iterC)
-        {
-           cout<<iterC->second<< " ";
-        }
+    }
+    for (itCaminos = Caminos.begin(); itCaminos != Caminos.end(); ++itCaminos)
+    {
+        cout << "El camino mas corto de " << G.Etiqueta(v) << " a " << itCaminos ->first << ": " << itCaminos ->second;
+        cout << ". Su costo es de: " << Distancia.find(itCaminos->first)->second << endl;
     }
 }
 
@@ -92,19 +92,19 @@ int main()
     G.AgregVert("E");
     G.AgregVert("F");
     G.AgregVert("G");
-    G.AgregArist(4, 0, 6);
-    G.AgregArist(1, 6, 5);
-    G.AgregArist(8, 0, 5);
-    G.AgregArist(3, 1, 0);
-    G.AgregArist(13, 1, 3);
-    G.AgregArist(2, 2, 1);
-    G.AgregArist(3, 3, 2);
-    G.AgregArist(15, 2, 4);
-    G.AgregArist(1, 3, 4);
-    G.AgregArist(4, 5, 4);
-    G.AgregArist(2, 5, 3);
+    G.AgregArist(0, 6, 4);
+    G.AgregArist(6, 5,1);
+    G.AgregArist(0, 5, 8);
+    G.AgregArist(1, 0, 3);
+    G.AgregArist(1, 3, 13);
+    G.AgregArist(2, 1, 2);
+    G.AgregArist(3, 2, 3);
+    G.AgregArist(2, 4, 15);
+    G.AgregArist(3, 4, 1);
+    G.AgregArist(5, 4, 4);
+    G.AgregArist(5, 3, 2);
     G.MuestreDatos();
-    Dijkstra(2); //REVISAR
+    Algoritmo_Dijkstra(2); //REVISAR
 //    Relacion_LSE <int, string> R;
 //    R.Crear();
 //    R.AgregarRelacion(1, "A");
