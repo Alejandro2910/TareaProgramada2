@@ -99,7 +99,7 @@ template<typename A> void Diccionario<A>::Eliminar(A elem){
 
 template<typename A>bool Diccionario<A>::Pertenece(A elem){
     NodoD<A>*iter = PrimerElem;
-    while(iter->PtrSig != nullptr){
+    while(iter != nullptr){
         if(iter->Dato == elem){
             return true;
         }
@@ -113,6 +113,7 @@ template<typename A>int Diccionario<A>::NumElem(){
     NodoD<A>*iter = PrimerElem;
     while(iter != nullptr){
         ++cont;
+        iter = iter->PtrSig;
     }
     return cont;
 }
