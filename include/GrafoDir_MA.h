@@ -4,6 +4,8 @@
 #include <iostream>
 
 using namespace std;
+static int VerticeNulo = -1;
+static int AristaNula = -1;
 
 template <class A>
 class GrafoDir_MA
@@ -17,19 +19,19 @@ class GrafoDir_MA
         int UltimoLleno;
 
         void Iniciar(){
-            UltimoLleno=-1;
+            UltimoLleno=VerticeNulo;
         }
 
         void Destruir(){
-            UltimoLleno=-1;
+            UltimoLleno=VerticeNulo;
         }
 
         void vaciar(){
-            UltimoLleno=-1;
+            UltimoLleno=VerticeNulo;
         }
 
         bool vacio(){
-            if(UltimoLleno==-1){
+            if(UltimoLleno == VerticeNulo){
                 return true;
             }else{
                 return false;
@@ -37,15 +39,11 @@ class GrafoDir_MA
         }
 
         void AgregVert(string etiq){
-            if(UltimoLleno<maximo){
-                UltimoLleno++;
-                ListaEtiquetas[UltimoLleno] = etiq;
-                for(int x=0;x<maximo;x++){
-                    MatAris[x][UltimoLleno]=-1;
-                    MatAris[UltimoLleno][x]=-1;
-                }
-            }else{
-                cout<<"No hay más campo en el Grafo para agregar Vértices"<<endl;
+            UltimoLleno++;
+            ListaEtiquetas[UltimoLleno] = etiq;
+            for(int x=0;x<maximo;x++){
+                MatAris[x][UltimoLleno]=AristaNula;
+                MatAris[UltimoLleno][x]=AristaNula;
             }
         }
 
@@ -64,16 +62,25 @@ class GrafoDir_MA
             UltimoLleno--;
         }
 
-        void AgregArist(A peso, int v1, int v2){
+        void AgregArist(int v1, int v2, A peso){
             MatAris[v1][v2]=peso;
         }
 
         void ElimArist(int v1, int v2){
-            MatAris[v1][v2]=-1;
+            MatAris[v1][v2]=AristaNula;
         }
 
         string Etiqueta(int vert){
             return ListaEtiquetas[vert];
+        }
+
+        int Vert(string etiq){
+            for(int x = 0;x <= UltimoLleno;++x){
+                if(ListaEtiquetas[x] == etiq){
+                    return x;
+                }
+            }
+            return VerticeNulo;
         }
 
         A Peso(int v1, int v2){
@@ -88,29 +95,37 @@ class GrafoDir_MA
         }
 
         int PrimerVert(){
-            return 0;
+            if (UltimoLleno != VerticeNulo)
+            {
+                return 0;
+            }
+            return VerticeNulo;
         }
 
         int SteVert(int vert){
-            return vert + 1;
+            if ((UltimoLleno + 1) != (vert + 1))
+            {
+                return (vert + 1);
+            }
+            return VerticeNulo;
         }
 
         int PrimerVertAdy(int vert){
             for(int x=0;x<=UltimoLleno;x++){
-                if(MatAris[vert][x] != -1){
+                if(MatAris[vert][x] != AristaNula){
                     return x;
                 }
             }
-            return -1;
+            return VerticeNulo;
         }
 
         int SteVertAdy(int v1, int v2){
-            for(int x=v2;x<=UltimoLleno;x++){
-                if(MatAris[v1][x] != -1){
+            for(int x=v2 + 1;x<=UltimoLleno;x++){
+                if(MatAris[v1][x] != AristaNula){
                     return x;
                 }
             }
-            return -1;
+            return VerticeNulo;
         }
 
         int NumVert(){
@@ -118,7 +133,7 @@ class GrafoDir_MA
         }
 
         bool ExisteArista(int v1, int v2){
-            if(MatAris[v1][v2] != 0){
+            if(MatAris[v1][v2] != AristaNula){
                 return true;
             }else{
                 return false;
