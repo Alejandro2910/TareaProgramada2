@@ -9,8 +9,9 @@ typedef int Peso;
 
 using namespace std;
 
-GrafoDir_MA<int> G;
 Diccionario<int> D;
+Relacion_LSE <int, int> R;
+GrafoDir_MA<int> G;
 map<string, Peso> Distancia;
 map<string, string> Caminos;
 map<string, Peso>::iterator it;
@@ -22,10 +23,9 @@ void Algoritmo_Dijkstra(Vertice v){
     Diccionario <Vertice> VerticesRevisados;
     VerticesRevisados.Crear();
     Vertice actual = G.PrimerVert();
-    Vertice pivote;
-    Vertice AdyacentePivote;
-    int menor;
-    int n = G.NumVert();
+    Vertice pivote = 0;
+    Vertice AdyacentePivote = 0;
+    int menor = 0;
     while (actual != VerticeNulo)
     {
         if (G.ExisteArista(v, actual))
@@ -46,14 +46,14 @@ void Algoritmo_Dijkstra(Vertice v){
         actual = G.SteVert(actual);
     }
     VerticesRevisados.Agregar(v);
-    while (n != VerticesRevisados.NumElem())
+    while (G.NumVert() != VerticesRevisados.NumElem())
     {
         menor = -1;
         for (it = Distancia.begin(); it != Distancia.end(); ++it) //Busca el menor camino que no esté listo.
         {
-            if ((it ->second < menor && it ->second >= 0) || menor < 0)
+            if (!VerticesRevisados.Pertenece(G.Vert(it->first)))
             {
-                if (!VerticesRevisados.Pertenece(G.Vert(it->first)))
+                if (((it ->second < menor && it ->second >= 0) || menor < 0) && G.Vert(it ->first) != v )
                 {
                     menor = it ->second;
                     pivote = G.Vert(it ->first);
@@ -81,9 +81,12 @@ void Algoritmo_Dijkstra(Vertice v){
     }
 }
 
+void Algoritmo_Floyd(){
+
+}
+
 int main()
 {
-    GrafoDir_MA<int> G;
     G.Iniciar();
     G.AgregVert("A");
     G.AgregVert("B");
@@ -92,29 +95,33 @@ int main()
     G.AgregVert("E");
     G.AgregVert("F");
     G.AgregVert("G");
-    G.AgregArist(0, 6, 4);
-    G.AgregArist(6, 5,1);
-    G.AgregArist(0, 5, 8);
-    G.AgregArist(1, 0, 3);
-    G.AgregArist(1, 3, 13);
-    G.AgregArist(2, 1, 2);
-    G.AgregArist(3, 2, 3);
-    G.AgregArist(2, 4, 15);
-    G.AgregArist(3, 4, 1);
-    G.AgregArist(5, 4, 4);
-    G.AgregArist(5, 3, 2);
-    G.MuestreDatos();
+    G.AgregArist(G.Vert("A"), G.Vert("G"), 4);
+    G.AgregArist(G.Vert("G"), G.Vert("F"), 1);
+    G.AgregArist(G.Vert("A"), G.Vert("F"), 8);
+    G.AgregArist(G.Vert("B"), G.Vert("A"), 3);
+    G.AgregArist(G.Vert("B"), G.Vert("D"), 13);
+    G.AgregArist(G.Vert("C"), G.Vert("B"), 2);
+    G.AgregArist(G.Vert("D"), G.Vert("C"), 3);
+    G.AgregArist(G.Vert("C"), G.Vert("E"), 15);
+    G.AgregArist(G.Vert("D"), G.Vert("E"), 1);
+    G.AgregArist(G.Vert("F"), G.Vert("E"), 4);
+    G.AgregArist(G.Vert("F"), G.Vert("D"), 2);
+
+    R.Crear();
+    R.AgregarRelacion(G.Vert("A"), G.Vert("G"));
+    R.AgregarRelacion(G.Vert("G"), G.Vert("F"));
+    R.AgregarRelacion(G.Vert("A"), G.Vert("F"));
+    R.AgregarRelacion(G.Vert("B"), G.Vert("A"));
+    R.AgregarRelacion(G.Vert("B"), G.Vert("D"));
+    R.AgregarRelacion(G.Vert("C"), G.Vert("B"));
+    R.AgregarRelacion(G.Vert("D"), G.Vert("C"));
+    R.AgregarRelacion(G.Vert("C"), G.Vert("E"));
+    R.AgregarRelacion(G.Vert("D"), G.Vert("E"));
+    R.AgregarRelacion(G.Vert("F"), G.Vert("E"));
+    R.AgregarRelacion(G.Vert("F"), G.Vert("D"));
+    R.MuestreDatos();
+
     Algoritmo_Dijkstra(2); //REVISAR
-//    Relacion_LSE <int, string> R;
-//    R.Crear();
-//    R.AgregarRelacion(1, "A");
-//    R.AgregarRelacion(2, "B");
-//    R.AgregarRelacion(3, "C");
-//    R.AgregarRelacion(4, "D");
-//    R.AgregarRelacion(5, "E");
-//    R.MuestreDatos();
-//    R.EliminarRelacion(5, "E");
-//    R.MuestreDatos();
 //
 //    Diccionario<int> D;
 //    D.Crear();
