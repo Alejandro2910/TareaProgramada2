@@ -3,9 +3,10 @@
 #include "NodoA.h"
 #include "NodoV.h"
 
+NodoV* NodoNulo = nullptr ;
+NodoA* NodoNulo = nullptr ;
 typedef string T;
 typedef int P;
-static NodoV VerticeNulo = nullptr;
 class GrafoDir_LA
 {
     public:
@@ -18,9 +19,9 @@ class GrafoDir_LA
         void Vaciar();
         bool Vacio();
         void AgVer(T);
-        void ElimVert(NodoV);
-        void AgArista(NodoV, NodoV);
-        void ElimArista(NodoV, NodoV);
+        void ElimVert(NodoV*);
+        void AgArista(P, NodoV*, NodoV*);
+        void ElimArista(NodoV*, NodoV*);
         T Etiqueta(NodoV);
         P Peso(NodoV, NodoV);
         void ModifEtiqueta(NodoV, T);
@@ -94,19 +95,100 @@ void GrafoDir_LA::AgVer(T label)
 {
     if(!g)
     {
-        NodoV* n=new NodoV();
-        n->label=label;
+        NodoV* n=new NodoV(label);
+        //n->label=label;
         g=n;
     }
     else
     {
-
+        NodoV* n=new NodoV(label);
+        n->NextVert=g;
+        g=n;
     }
 }
 
-void GrafoDir_LA::ElimVert(NodoV){}
-void GrafoDir_LA::AgArista(NodoV, NodoV){}
-void GrafoDir_LA::ElimArista(NodoV, NodoV){}
+void GrafoDir_LA::ElimVert(NodoV* n)
+{
+    NodoV* nIter=g;
+    while(nIter!=NodoNulo)
+    {
+        if(nIter->NextVert == n)
+        {
+            nIter->NextVert=n->NextVert;
+            delete n;
+            break;
+        }
+        nIter=nIter->NextVert;
+    }
+}
+
+void GrafoDir_LA::AgArista(P peso, NodoV* v1, NodoV* v2)
+{
+    //Se puede hacer mas eficiente
+    NodoA *a1= new NodoA(peso, v1);
+    NodoA *a2= new NodoA(peso, v2);
+    NodoV* nIter=g;
+    bool enco1, enco2 = false;
+    while(nIter!=NodoNulo  && !(enco1&&enco2))
+    {
+        if(nIter->NextVert == v2)
+        {
+            a1->NextAdy=nIter->NextAdy;
+            nIter->NextAdy=a1;
+            enco2=true;
+        }
+        else
+        {
+            if(nIter->NextVert == v1)
+            {
+                a2->NextAdy=nIter->NextAdy;
+                nIter->NextAdy=a2;
+                enco1=true;
+            }
+        }
+        nIter=nIter->NextVert;
+    }
+}
+
+void GrafoDir_LA::ElimArista(NodoV* v1, NodoV* v2)
+{
+    NodoV* nIter=g;
+    bool enco1, enco2 = false;
+
+    while(nIter!=NodoNulo  && !(enco1&&enco2))
+    {
+        if(nIter->NextVert == v2 )
+        {
+            NodoA* aiter=nIter->NextAdy;
+            while( aiter!=nullptr)
+            {
+                if(aiter->NextAdy!=nullptr)
+                {
+                    if(aiter->NextAdy->NextVert==v1)
+                    {
+                        NodoA* tmp=aiter;
+//                        aiter->NextAdy->NextVert=aiter->NextAdy->NextAdy;
+//                        delete
+                    }
+                }
+            }
+            a1->NextAdy=nIter->NextAdy;
+            nIter->NextAdy=a1;
+            enco2=true;
+        }
+        else
+        {
+            if(nIter->NextVert == v1)
+            {
+                a2->NextAdy=nIter->NextAdy;
+                nIter->NextAdy=a2;
+                enco1=true;
+            }
+        }
+        nIter=nIter->NextVert;
+    }
+}
+
 T GrafoDir_LA::Etiqueta(NodoV){}
 P GrafoDir_LA::Peso(NodoV, NodoV){}
 void GrafoDir_LA::ModifEtiqueta(NodoV, T){}
