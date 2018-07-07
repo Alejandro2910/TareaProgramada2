@@ -5,6 +5,7 @@
 
 typedef string T;
 typedef int P;
+static NodoV VerticeNulo = nullptr;
 class GrafoDir_LA
 {
     public:

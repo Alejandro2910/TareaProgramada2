@@ -1,5 +1,6 @@
 #include <iostream>
 #include "GrafoDir_MA.h"
+#include "GrafoDir_LA.h"
 #include "Relacion_LSE.h"
 #include <map>
 #include "Diccionario.h"
@@ -11,19 +12,18 @@ using namespace std;
 
 Relacion_LSE <string, int> Dist;
 Relacion_LSE <string, string> Cam;
+Relacion_LSE <int, int> Aristas;
+Diccionario <Vertice> VerticesRevisados;
 NodoL<string, string>* iterCam;
 NodoL<string, int>* iter;
 GrafoDir_MA<int> G;
+GrafoDir_MA<int> G2;
 Vertice actual;
 Vertice pivote = 0;
 Vertice AdyacentePivote = 0;
 int menor = 0;
-Diccionario <Vertice> VerticesRevisados;
 
 void Algoritmo_Dijkstra(Vertice v){
-    Dist.Crear();
-    Cam.Crear();
-    VerticesRevisados.Crear();
     actual = G.PrimerVert();
     while (actual != VerticeNulo)
     {
@@ -136,9 +136,84 @@ void Algoritmo_Floyd(){
 
 }
 
+
+void Prof_Primero_R(Vertice v){
+    cout<<G.Etiqueta(v)<<" ";
+    VerticesRevisados.Agregar(v);
+    Vertice va = G.PrimerVertAdy(v);
+    while(va != VerticeNulo){
+        if(!VerticesRevisados.Pertenece(va)){
+            Prof_Primero_R(va);
+        }
+        va = G.SteVertAdy(v, va);
+    }
+}
+
+void Prof_Primero(){
+    cout<<"Listado de elementos por profundidad primero: ";
+    if(!G.vacio()){
+        VerticesRevisados.Vaciar();
+        Vertice v = G.PrimerVert();
+        while(v != VerticeNulo){
+            if(!VerticesRevisados.Pertenece(v)){
+                Prof_Primero_R(v);
+            }
+            v = G.SteVert(v);
+        }
+        VerticesRevisados.Destruir();
+    }
+}
+
+void Elimine_Vertice_NoAis(Vertice elim){
+    if(G.vacio()){
+        cout<<"Imposible eliminar vertice de grafo vacio"<<endl;
+    }else{
+        Vertice v = G.PrimerVert();
+        while(v != VerticeNulo){
+            if(G.ExisteArista(v, elim)){
+                G.ElimArist(v, elim);
+            }else if(v == elim){
+                Vertice va = G.PrimerVertAdy(elim);
+                Vertice vaAdel;
+                while(vaAdel != VerticeNulo){
+                    vaAdel = G.SteVertAdy(elim, va);
+                    G.ElimArist(elim, va);
+                    va = vaAdel;
+                }
+            }
+            v = G.SteVert(v);
+        }
+    }
+    G.ElimVert(elim);
+}
+
+//GrafoDir_MA<int> Copie_Grafo(GrafoDir_MA<int> G1, GrafoDir_MA<int> G2){
+//    if(G1.vacio()){
+//        G2.vaciar();
+//        return G2;
+//    }else{
+//        if(!G2.vacio()){
+//            G2.vaciar();
+//        }
+//        Vertice v = G1.PrimerVert();
+//        while(v != VerticeNulo){
+//            G2.AgregVert(v);
+//            v = G1.SteVert(v);
+//        }
+//
+//        Aristas.Vaciar();
+//
+//    }
+//}
+
 int main()
 {
+    Dist.Crear();
+    Cam.Crear();
+    VerticesRevisados.Crear();
+    Aristas.Crear();
     G.Iniciar();
+    G2.Iniciar();
     G.AgregVert("A");
     G.AgregVert("B");
     G.AgregVert("C");
@@ -149,7 +224,7 @@ int main()
     G.AgregArist(G.Vert("A"), G.Vert("E"), 3);
     G.AgregArist(G.Vert("A"), G.Vert("F"), 2);
     G.AgregArist(G.Vert("B"), G.Vert("A"), 3);
-    G.AgregArist(G.Vert("B"), G.Vert("C"), 2);
+    G.AgregArist(G.Vert("B"), G.Vert("C"), 3);
     G.AgregArist(G.Vert("B"), G.Vert("D"), 2);
     G.AgregArist(G.Vert("B"), G.Vert("E"), 8);
     G.AgregArist(G.Vert("B"), G.Vert("F"), 8);
@@ -161,18 +236,13 @@ int main()
     G.AgregArist(G.Vert("F"), G.Vert("E"), 8);
 
     Algoritmo_Dijkstra(2);
+    cout<<endl;
     Algoritmo_Floyd();
-//
-//    Diccionario<int> D;
-//    D.Crear();
-//    D.Agregar(1);
-//    D.Agregar(0);
-//    D.Agregar(3);
-//    D.Agregar(156);
-//    if(D.Pertenece(1)){
-//        cout<<"Si"<<endl;
-//    }
-//    D.Eliminar(1);
-
+    cout<<endl;
+    Prof_Primero();
+    cout<<endl;
+    Elimine_Vertice_NoAis(G.Vert("A"));
+    G.MuestreDatos();
+    cout<<endl;
     return 0;
 }
