@@ -1,18 +1,15 @@
 #ifndef NODOV_H
 #define NODOV_H
-#include "NodoA.h"
 
-typedef string T;
-class NodoA;
+class NodoA
 class NodoV
 {
     public:
-        T label;
+        string label;
         NodoA *NextAdy;
         NodoV *NextVert;
 
         NodoV();
-        NodoV(T);
         virtual ~NodoV();
 
     protected:
@@ -20,18 +17,4 @@ class NodoV
     private:
 };
 
-NodoV::NodoV()
-{
-
-}
-
-NodoV::NodoV(T label)
-{
-    label=label;
-}
-
-NodoV::~NodoV()
-{
-
-}
 #endif // NODOV_H
