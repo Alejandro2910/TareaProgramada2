@@ -177,6 +177,21 @@ class Relacion_LSE
             }
         }
 
+        NodoL<A, B>* Primero(){
+            return PrimerElem;
+        }
+
+        NodoL<A, B>* Encuentre(A elemento){
+            NodoL<A, B>* it = PrimerElem;
+            while(it != nullptr){
+                if(it->elem.first == elemento){
+                    return it;
+                }
+                it = it->ptrSig;
+            }
+            return nullptr;
+        }
+
     protected:
 
     private:
