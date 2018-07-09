@@ -187,24 +187,34 @@ void Elimine_Vertice_NoAis(Vertice elim){
     G.ElimVert(elim);
 }
 
-//GrafoDir_MA<int> Copie_Grafo(GrafoDir_MA<int> G1, GrafoDir_MA<int> G2){
-//    if(G1.vacio()){
-//        G2.vaciar();
-//        return G2;
-//    }else{
-//        if(!G2.vacio()){
-//            G2.vaciar();
-//        }
-//        Vertice v = G1.PrimerVert();
-//        while(v != VerticeNulo){
-//            G2.AgregVert(v);
-//            v = G1.SteVert(v);
-//        }
-//
-//        Aristas.Vaciar();
-//
-//    }
-//}
+GrafoDir_MA<int> Copie_Grafo(GrafoDir_MA<int> G1, GrafoDir_MA<int> G2){
+    if(G1.vacio()){
+        G2.vaciar();
+        return G2;
+    }else{
+        if(!G2.vacio()){
+            G2.vaciar();
+        }
+        Vertice v = G1.PrimerVert();
+        while(v != VerticeNulo){
+            G2.AgregVert(G.Etiqueta(v));
+            v = G1.SteVert(v);
+        }
+        v = G.PrimerVert();
+        while(v != VerticeNulo){
+            Vertice va = G.PrimerVertAdy(v);
+            while(va != VerticeNulo){
+                    if(G.ExisteArista(v, va)){
+                        G2.AgregArist(v, va, G.Peso(v, va));
+                    }
+                va = G.SteVertAdy(v, va);
+            }
+            v = G.SteVert(v);
+        }
+
+    }
+    return G2;
+}
 
 int main()
 {
