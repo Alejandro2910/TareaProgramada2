@@ -4,7 +4,7 @@
 #include "NodoV.h"
 
 NodoV* NodoNulo = nullptr ;
-NodoA* NodoNulo = nullptr ;
+NodoA* NodoNulo1 = nullptr ;
 typedef string T;
 typedef int P;
 class GrafoDir_LA
@@ -172,16 +172,16 @@ void GrafoDir_LA::ElimArista(NodoV* v1, NodoV* v2)
                     }
                 }
             }
-            a1->NextAdy=nIter->NextAdy;
-            nIter->NextAdy=a1;
+         //   a1->NextAdy=nIter->NextAdy;
+//            nIter->NextAdy=a1;
             enco2=true;
         }
         else
         {
             if(nIter->NextVert == v1)
             {
-                a2->NextAdy=nIter->NextAdy;
-                nIter->NextAdy=a2;
+     //           a2->NextAdy=nIter->NextAdy;
+//                nIter->NextAdy=a2;
                 enco1=true;
             }
         }
