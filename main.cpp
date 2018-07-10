@@ -1,7 +1,15 @@
+/** Tarea programada 2.
+*   En esta tarea se trabajaron los modelos matematicos: Grafo Dirigido, Grafo No Dirigido, Diccionario y Relaciones 1:1
+*   junto con sus respectivos algoritmos y operadores basicos.
+*   @author Alejandro Benavides B61015, Andres Mesen B64390
+*   @version V5
+**/
+
 #include <iostream>
 #include "GrafoDir_MA.h"
 #include "GrafoDir_LA.h"
 #include "Relacion_LSE.h"
+#include "GrafoNoDir_MA.h"
 #include <map>
 #include "Diccionario.h"
 
@@ -12,17 +20,27 @@ using namespace std;
 
 Relacion_LSE <string, int> Dist;
 Relacion_LSE <string, string> Cam;
+Relacion_LSE <int, int> SolAct;
+Relacion_LSE <int, int>SolFact;
 Relacion_LSE <int, int> Aristas;
-Diccionario <Vertice> VerticesRevisados;
+Diccionario <Vertice> VerticesVisitados;
 NodoL<string, string>* iterCam;
 NodoL<string, int>* iter;
 GrafoDir_MA<int> G;
 GrafoDir_MA<int> G2;
+GrafoNoDir_MA<int> GN;
 Vertice actual;
 Vertice pivote = 0;
 Vertice AdyacentePivote = 0;
 int menor = 0;
+int ContSol = 0;
+int ContVert = 1;
+int CostoAct = 0;
+int MejorCosto = 0;
 
+/** @brief Este algoritmo de el grado dirigido calcula el camino mas corto desde el vertice v, a todos los demas.
+*   @param Vertice v.
+**/
 void Algoritmo_Dijkstra(Vertice v){
     actual = G.PrimerVert();
     while (actual != VerticeNulo)
@@ -44,14 +62,14 @@ void Algoritmo_Dijkstra(Vertice v){
         }
         actual = G.SteVert(actual);
     }
-    VerticesRevisados.Agregar(v);
-    while (G.NumVert() != VerticesRevisados.NumElem())
+    VerticesVisitados.Agregar(v);
+    while (G.NumVert() != VerticesVisitados.NumElem())
     {
         menor = -1;
         iter = Dist.Primero();
         while(iter != nullptr)
         {
-            if (!VerticesRevisados.Pertenece(G.Vert(iter->elem.first)))
+            if (!VerticesVisitados.Pertenece(G.Vert(iter->elem.first)))
             {
                 if (((iter->elem.second < menor && iter->elem.second >= 0) || menor < 0) && G.Vert(iter->elem.first) != v )
                 {
@@ -61,12 +79,12 @@ void Algoritmo_Dijkstra(Vertice v){
             }
             iter = iter ->ptrSig;
         }
-        VerticesRevisados.Agregar(pivote);
+        VerticesVisitados.Agregar(pivote);
         AdyacentePivote = G.PrimerVertAdy(pivote);
         while (AdyacentePivote != VerticeNulo)
         {
             iter = Dist.Encuentre(G.Etiqueta(AdyacentePivote));
-            if (!VerticesRevisados.Pertenece(AdyacentePivote) && (iter->elem.second > (Dist.Encuentre(G.Etiqueta(pivote))->elem.second) + G.Peso(pivote, AdyacentePivote) || iter->elem.second < 0))
+            if (!VerticesVisitados.Pertenece(AdyacentePivote) && (iter->elem.second > (Dist.Encuentre(G.Etiqueta(pivote))->elem.second) + G.Peso(pivote, AdyacentePivote) || iter->elem.second < 0))
             {
                 iter->elem.second = Dist.Encuentre(G.Etiqueta(pivote))->elem.second + G.Peso(pivote, AdyacentePivote);
                 iterCam = Cam.Encuentre(G.Etiqueta(AdyacentePivote));
@@ -84,6 +102,9 @@ void Algoritmo_Dijkstra(Vertice v){
     }
 }
 
+/** @brief Este algoritmo de el grado dirigido calcula el camino mas corto entre cada par de vertices del grafo.
+*   @param No recibe parametros.
+**/
 void Algoritmo_Floyd(){
     int A[G.NumVert()][G.NumVert()];
     string P[G.NumVert()][G.NumVert()];
@@ -119,6 +140,7 @@ void Algoritmo_Floyd(){
             }
         }
     }
+
     cout<<"Matriz de Pesos: "<<endl;
     for(i = 0;i < G.NumVert();i++){
         for(j = 0;j < G.NumVert();j++){
@@ -136,34 +158,41 @@ void Algoritmo_Floyd(){
 
 }
 
-
+/** @brief Este algoritmo lista los vertices del grafo por medio del recorrido de profundidad primero, siendo llamado por el sig algoritmo.
+*   @param Vertice v.
+**/
 void Prof_Primero_R(Vertice v){
     cout<<G.Etiqueta(v)<<" ";
-    VerticesRevisados.Agregar(v);
+    VerticesVisitados.Agregar(v);
     Vertice va = G.PrimerVertAdy(v);
     while(va != VerticeNulo){
-        if(!VerticesRevisados.Pertenece(va)){
+        if(!VerticesVisitados.Pertenece(va)){
             Prof_Primero_R(va);
         }
         va = G.SteVertAdy(v, va);
     }
 }
 
+/** @brief Este algoritmo llama al algoritmo que lista los vertices por medio de profundidad primero cuando esta seguro que el grafo no esta vacio.
+*   @param No recibe parametros.
+**/
 void Prof_Primero(){
     cout<<"Listado de elementos por profundidad primero: ";
     if(!G.vacio()){
-        VerticesRevisados.Vaciar();
+        VerticesVisitados.Vaciar();
         Vertice v = G.PrimerVert();
         while(v != VerticeNulo){
-            if(!VerticesRevisados.Pertenece(v)){
+            if(!VerticesVisitados.Pertenece(v)){
                 Prof_Primero_R(v);
             }
             v = G.SteVert(v);
         }
-        VerticesRevisados.Destruir();
     }
 }
 
+/** @brief Este algoritmo permite eliminar un vertice el cual no se encuentre aislado, siempre y cuando este no se encuentre vacio.
+*   @param Vertice elim
+**/
 void Elimine_Vertice_NoAis(Vertice elim){
     if(G.vacio()){
         cout<<"Imposible eliminar vertice de grafo vacio"<<endl;
@@ -183,14 +212,17 @@ void Elimine_Vertice_NoAis(Vertice elim){
             }
             v = G.SteVert(v);
         }
+        G.ElimVert(elim);
     }
-    G.ElimVert(elim);
+
 }
 
-GrafoDir_MA<int> Copie_Grafo(GrafoDir_MA<int> G1, GrafoDir_MA<int> G2){
+/** @brief Este algoritmo copia crea una copia de g1 en g2.
+*   @param GrafoDir_MA<int> G1, GrafoDir_MA<int> G2.
+**/
+void Copie_Grafo(GrafoDir_MA<int> G1, GrafoDir_MA<int> &G2){
     if(G1.vacio()){
         G2.vaciar();
-        return G2;
     }else{
         if(!G2.vacio()){
             G2.vaciar();
@@ -213,17 +245,91 @@ GrafoDir_MA<int> Copie_Grafo(GrafoDir_MA<int> G1, GrafoDir_MA<int> G2){
         }
 
     }
-    return G2;
+}
+
+/**
+* @brief Este algoritmo realiza el metodo de usqueda exhaustiva pura para buscar la solucion optima.
+* @param No recibe parámetros.
+*/
+void Problema_del_vendedor_R(Vertice i){//Para que funcione con GrafoDir cambiar el tipo vertice a NodoV* y los -1 en este algoritmo por GN.Anterior();
+    Vertice va = GN.PrimerVertAdy(i);
+    while(va != VerticeNulo){
+        if(!VerticesVisitados.Pertenece(va)){
+            VerticesVisitados.Agregar(va);
+            SolAct.AgregarRelacion(ContVert, va);
+            ++ContVert;
+            CostoAct += GN.Peso(i - 1, va);
+            if(i == GN.NumVert()){
+                if(GN.ExisteArista(GN.PrimerVert(), va)){
+                    CostoAct += GN.Peso(GN.PrimerVert(), va);
+                    if(CostoAct < MejorCosto){
+                        MejorCosto = CostoAct;
+                        SolFact = SolAct;
+                    }
+                    ++ContSol;
+                    CostoAct -= GN.Peso(GN.PrimerVert(), va);
+                }
+            }else{
+                Problema_del_vendedor_R(GN.SteVert(va));
+            }
+            CostoAct -= GN.Peso(i - 1, va);
+            --ContVert;
+            SolAct.EliminarRelacion(ContVert, va);
+            VerticesVisitados.Eliminar(va);
+        }
+        va = GN.SteVertAdy(i - 1, va);
+    }
+}
+
+/**
+* @brief Este algoritmo verifica que el grafo no este vacio para llamar a su metodo recursivo.
+* @param No recibe parámetros.
+* @return void.
+*/
+void Problema_del_vendedor(){
+    if(!GN.vacio()){
+        VerticesVisitados.Vaciar();
+        SolAct.Vaciar();
+        SolFact.Vaciar();
+        Problema_del_vendedor_R(GN.PrimerVert());
+        cout << "Se obtuvieron " << ContSol << " soluciones factibles.\nLa solucion de menor costo obtenida fue: ";
+        for (int i = 0; i <= SolFact.NumRel() - 1; ++i)
+        {
+            cout << GN.Etiqueta(SolFact.Encuentre(i)->elem.second) << ", ";
+        }
+        cout << "con un costo de: " << MejorCosto << "." << endl;
+        }
 }
 
 int main()
 {
     Dist.Crear();
     Cam.Crear();
-    VerticesRevisados.Crear();
+    VerticesVisitados.Crear();
     Aristas.Crear();
     G.Iniciar();
     G2.Iniciar();
+    GN.Iniciar();
+    int resp = 0;
+    string etiq="";
+    string nuevEtiq="";
+    string v1="";
+    string v2="";
+    int PoA=0;
+
+    GN.AgregVert("A");
+    GN.AgregVert("B");
+    GN.AgregVert("C");
+    GN.AgregVert("D");
+    GN.AgregVert("E");
+    GN.AgregArist(G.Vert("A"), G.Vert("B"), 100);
+    GN.AgregArist(G.Vert("A"), G.Vert("C"), 30);
+    GN.AgregArist(G.Vert("B"), G.Vert("C"), 60);
+    GN.AgregArist(G.Vert("B"), G.Vert("D"), 10);
+    GN.AgregArist(G.Vert("C"), G.Vert("D"), 20);
+    GN.AgregArist(G.Vert("D"), G.Vert("E"), 50);
+    GN.AgregArist(G.Vert("E"), G.Vert("A"), 10);
+
     G.AgregVert("A");
     G.AgregVert("B");
     G.AgregVert("C");
@@ -245,14 +351,222 @@ int main()
     G.AgregArist(G.Vert("E"), G.Vert("D"), 20);
     G.AgregArist(G.Vert("F"), G.Vert("E"), 8);
 
-    Algoritmo_Dijkstra(2);
-    cout<<endl;
-    Algoritmo_Floyd();
-    cout<<endl;
-    Prof_Primero();
-    cout<<endl;
-    Elimine_Vertice_NoAis(G.Vert("A"));
-    G.MuestreDatos();
-    cout<<endl;
+    cout<<"Bienvenido a la tarea programada, los grafos dirigido y no dirigido se crearon automaticamente. Para conocer sus\nelementos cnsulte el manual de usuario."<<endl;
+    while(resp != -1){
+        cout<<"\nQue modelo desea utilizar:\n1. Grafo Dirigido.\n2. Grafo No Dirigido.\n3. Salir"<<endl;
+        cin>>resp;
+        if(resp == 1){
+            cout<<"\nQue desea hacer:\n1. Usar operadores basicos.\n2. Usar los algoritmos.\n3. Salir"<<endl;
+            cin>>resp;
+            switch(resp){
+            case 1:
+                cout<<"\nQue operador basico desea usar:\n1. Destruir.\n2. Vaciar.\n3. Agregar Vertice.\n4. Eliminar Vertice.\n5. Agregar Arista.\n6. Eliminar Arista.\n7. Modificar Etiqueta.\n8. Modificar Peso"<<endl;
+                cin>>resp;
+                etiq = "";
+                v1 = "";
+                v2 = "";
+                PoA = 0;
+                nuevEtiq = "";
+                switch(resp){
+                case 1:
+                    G.Destruir();
+                    break;
+                case 2:
+                    G.vaciar();
+                    G.MuestreDatos();
+                    break;
+                case 3:
+                    cout<<"Digite la etiqueta que llevara el vertice: ";
+                    cin>>etiq;
+                    G.AgregVert(etiq);
+                    G.MuestreDatos();
+                    break;
+                case 4:
+                    cout<<"Digite la etiqueta del vertice que desea eliminar(recuerde que obligatoriamente debe pertenecer al grafo): ";
+                    cin>>etiq;
+                    G.ElimVert(G.Vert(etiq));
+                    G.MuestreDatos();
+                    break;
+                case 5:
+                    cout<<"Digite la etiqueta del vertice de salida: ";
+                    cin>>v1;
+                    cout<<"\nDigite la etiqueta del vertice de llegada: ";
+                    cin>>v2;
+                    cout<<"\nDigite valor del peso de la arista: ";
+                    cin>>PoA;
+                    G.AgregArist(G.Vert(v1), G.Vert(v2), PoA);
+                    G.MuestreDatos();
+                    break;
+                case 6:
+                    cout<<"Digite la etiqueta del vertice de salida: ";
+                    cin>>v1;
+                    cout<<"\nDigite la etiqueta del vertice de llegada: ";
+                    cin>>v2;
+                    G.ElimArist(G.Vert(v1), G.Vert(v2));
+                    G.MuestreDatos();
+                    break;
+                case 7:
+                    cout<<"Digite la etiqueta del vertice a modificar: ";
+                    cin>>etiq;
+                    cout<<"\nDigite la nueva etiqueta: ";
+                    cin>>nuevEtiq;
+                    G.ModifEtiq(G.Vert(etiq), nuevEtiq);
+                    G.MuestreDatos();
+                    break;
+                case 8:
+                    cout<<"Digite la etiqueta del vertice de salida: ";
+                    cin>>v1;
+                    cout<<"\nDigite la etiqueta del vertice de llegada: ";
+                    cin>>v2;
+                    cout<<"\nDigite el nuevo peso: ";
+                    cin>>PoA;
+                    G.ModifPeso(G.Vert(v1), G.Vert(v2), PoA);
+                    G.MuestreDatos();
+                    break;
+                default:
+                    cout<<"OPCION INVALIDA"<<endl;
+                    break;
+                }
+                resp = 0;
+                break;
+            case 2:
+                cout<<"\nQue algoritmo desea ejecutar:\n1. Dijkstra.\n2. Floyd.\n3. Listado por Profundidad Primero.\n4. Eliminar vertice no aisaldo.\n5. Copiar grafo."<<endl;
+                cin>>resp;
+                v1 = "";
+                switch(resp){
+                case 1:
+                    cout<<"Digite la etiqueta del vertice que desea saber el menor camino: ";
+                    cin>>v1;
+                    Algoritmo_Dijkstra(G.Vert(v1));
+                    break;
+                case 2:
+                    Algoritmo_Floyd();
+                    break;
+                case 3:
+                    Prof_Primero();
+                    break;
+                case 4:
+                    cout<<"Digite la etiqueta del vertice que desea eliminar: ";
+                    cin>>v1;
+                    Elimine_Vertice_NoAis(G.Vert(v1));
+                    G.MuestreDatos();
+                    break;
+                case 5:
+                    Copie_Grafo(G, G2);
+                    cout<<"Grafo 1: "<<endl;
+                    G.MuestreDatos();
+                    cout<<"Grafo 2: "<<endl;
+                    G2.MuestreDatos();
+                    break;
+                default:
+                    cout<<"OPCION INVALIDA"<<endl;
+                    break;
+                }
+                resp = 0;
+                break;
+            case 3:
+                resp = -1;
+                break;
+            default:
+                cout<<"OPCION INVALIDA"<<endl;
+                break;
+            }
+        }else if(resp == 2){
+            cout<<"Que desea hacer:\n1. Usar operadores basicos.\n2. Usar los algoritmos.\n3. Salir"<<endl;
+            cin>>resp;
+            switch(resp){
+            case 1:
+                cout<<"\nQue operador basico desea usar:\n1. Destruir.\n2. Vaciar.\n3. Agregar Vertice.\n4. Eliminar Vertice.\n5. Agregar Arista.\n6. Eliminar Arista.\n7. Modificar Etiqueta.\n8. Modificar Peso"<<endl;
+                cin>>resp;
+                etiq = "";
+                v1 = "";
+                v2 = "";
+                PoA = 0;
+                nuevEtiq = "";
+                switch(resp){
+                case 1:
+                    GN.Destruir();
+                    break;
+                case 2:
+                    GN.vaciar();
+                    GN.MuestreDatos();
+                    break;
+                case 3:
+                    cout<<"Digite la etiqueta que llevara el vertice: ";
+                    cin>>etiq;
+                    GN.AgregVert(etiq);
+                    GN.MuestreDatos();
+                    break;
+                case 4:
+                    cout<<"Digite la etiqueta del vertice que desea eliminar(recuerde que obligatoriamente debe pertenecer al grafo): ";
+                    cin>>etiq;
+                    GN.ElimVert(G.Vert(etiq));
+                    GN.MuestreDatos();
+                    break;
+                case 5:
+                    cout<<"Digite la etiqueta del vertice de salida: ";
+                    cin>>v1;
+                    cout<<"\nDigite la etiqueta del vertice de llegada: ";
+                    cin>>v2;
+                    cout<<"\nDigite valor del peso de la arista: ";
+                    cin>>PoA;
+                    GN.AgregArist(G.Vert(v1), G.Vert(v2), PoA);
+                    GN.MuestreDatos();
+                    break;
+                case 6:
+                    cout<<"Digite la etiqueta del vertice de salida: ";
+                    cin>>v1;
+                    cout<<"\nDigite la etiqueta del vertice de llegada: ";
+                    cin>>v2;
+                    GN.ElimArist(G.Vert(v1), G.Vert(v2));
+                    GN.MuestreDatos();
+                    break;
+                case 7:
+                    cout<<"Digite la etiqueta del vertice a modificar: ";
+                    cin>>etiq;
+                    cout<<"\nDigite la nueva etiqueta: ";
+                    cin>>nuevEtiq;
+                    GN.ModifEtiq(G.Vert(etiq), nuevEtiq);
+                    GN.MuestreDatos();
+                    break;
+                case 8:
+                    cout<<"Digite la etiqueta del vertice de salida: ";
+                    cin>>v1;
+                    cout<<"\nDigite la etiqueta del vertice de llegada: ";
+                    cin>>v2;
+                    cout<<"\nDigite el nuevo peso: ";
+                    cin>>PoA;
+                    GN.ModifPeso(G.Vert(v1), G.Vert(v2), PoA);
+                    GN.MuestreDatos();
+                    break;
+                default:
+                    cout<<"OPCION INVALIDA"<<endl;
+                    break;
+                }
+                resp = 0;
+                break;
+            case 2:
+                cout<<"\nQue algoritmo desea ejecutar:\n1. Problema Vendedor"<<endl;
+                cin>>resp;
+                if(resp == 1){
+                    Problema_del_vendedor();
+                }else{
+                    cout<<"OPCION INVALIDA"<<endl;
+                }
+                resp = 0;
+                break;
+            case 3:
+                resp = -1;
+                break;
+            default:
+                cout<<"OPCION INVALIDA"<<endl;
+                break;
+            }
+        }else if(resp == 3){
+            resp = -1;
+        }else{
+            cout<<"OPCION INVALIDA"<<endl;
+        }
+    }
     return 0;
 }

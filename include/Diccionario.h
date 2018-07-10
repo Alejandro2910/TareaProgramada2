@@ -31,10 +31,18 @@ template<typename A>Diccionario<A>::~Diccionario(){
 
 }
 
+/**
+* @brief Operador basico que inicializa el modelo diccionario.
+* @param No recibe parámetros.
+*/
 template<typename A> void Diccionario<A>::Crear(){
     PrimerElem = nullptr;
 }
 
+/**
+* @brief Operador basico que destruye el diccionario.
+* @param No recibe parámetros.
+*/
 template<typename A> void Diccionario<A>::Destruir(){
     NodoD<A>* Sig;
     while(PrimerElem!=nullptr)
@@ -46,6 +54,10 @@ template<typename A> void Diccionario<A>::Destruir(){
     delete PrimerElem;
 }
 
+/**
+* @brief Operador basico que vacia el diccionario.
+* @param No recibe parámetros.
+*/
 template<typename A> void Diccionario<A>::Vaciar(){
     NodoD<A>* Sig;
     while(PrimerElem!=nullptr)
@@ -56,6 +68,11 @@ template<typename A> void Diccionario<A>::Vaciar(){
     }
 }
 
+/**
+* @brief Operador basico que revisa si el diccionario esta vacio.
+* @param No recibe parámetros.
+* @return Retorna true en caso de que este vacio, false en el contrario.
+*/
 template<typename A> bool Diccionario<A>::Vacio(){
     if(PrimerElem!=nullptr)
     {
@@ -64,6 +81,10 @@ template<typename A> bool Diccionario<A>::Vacio(){
     return false;
 }
 
+/**
+* @brief Operador basico que agrega elementos al dicciomario.
+* @param A elem.
+*/
 template<typename A> void Diccionario<A>::Agregar(A elem){
     if(PrimerElem == nullptr){
         PrimerElem = new NodoD<A>(elem);
@@ -76,6 +97,10 @@ template<typename A> void Diccionario<A>::Agregar(A elem){
     }
 }
 
+/**
+* @brief Operador basico que elimina el elemento enviado como parametro.
+* @param A elem.
+*/
 template<typename A> void Diccionario<A>::Eliminar(A elem){
     if(PrimerElem->Dato == elem){
         NodoD<A>* Temp = PrimerElem;
@@ -97,6 +122,11 @@ template<typename A> void Diccionario<A>::Eliminar(A elem){
     }
 }
 
+/**
+* @brief Operador basico que verifica que el elemento enviado como parametro pertenece al diccionario.
+* @param A elem.
+* @return True si el elemento pertenece, False de lo contrario.
+*/
 template<typename A>bool Diccionario<A>::Pertenece(A elem){
     NodoD<A>*iter = PrimerElem;
     while(iter != nullptr){
@@ -108,6 +138,11 @@ template<typename A>bool Diccionario<A>::Pertenece(A elem){
     return false;
 }
 
+/**
+* @brief Operador basico que retorna la cantidad de elementos del diccionario.
+* @param No recibe parametros.
+* @return Int con la cantidad de elementos del diccionario.
+*/
 template<typename A>int Diccionario<A>::NumElem(){
     int cont = 0;
     NodoD<A>*iter = PrimerElem;
