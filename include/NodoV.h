@@ -19,17 +19,28 @@ class NodoV
 
     private:
 };
-
+/**
+    * @brief Constructor vacío de la clase
+*/
 NodoV::NodoV()
 {
 
 }
 
-NodoV::NodoV(T label)
+/**
+    * @brief Constructor de la clase
+    * @param etiqueta: De tipo V contiene la etiqueta del vértice
+*/
+NodoV::NodoV(T etiqueta)
 {
-    label=label;
+    label=etiqueta;
+    NextAdy=nullptr;
+    NextVert=nullptr;
 }
 
+/**
+    * @brief Destructor de la clase
+*/
 NodoV::~NodoV()
 {
 

@@ -11,7 +11,7 @@ class NodoA
         NodoA *NextAdy;
         NodoV *NextVert;
 
-        NodoA(){}
+        NodoA(){}       //Constructor vacío de la clase
         NodoA(P, NodoV*);
         NodoA(P, NodoA*, NodoV*);
         virtual ~NodoA();
@@ -21,12 +21,21 @@ class NodoA
     private:
 };
 
-NodoA::NodoA(P peso, NodoV* v)
+/**
+    * @brief Constructor de la clase
+    * @param pes: De tipo P contiene el peso de la arista
+    * @param v: Puntero al nodo cabeza
+*/
+NodoA::NodoA(P pes, NodoV* v)
 {
     NextVert=v;
-    peso=peso;
+    peso=pes;
+    NextAdy=nullptr;
 }
 
+/**
+    * @brief Destructor de la clase
+*/
 NodoA::~NodoA()
 {
 
