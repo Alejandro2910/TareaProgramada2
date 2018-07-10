@@ -10,50 +10,52 @@
 	<string>
 	<iostream>
 
-1530984775 source:c:\users\crist\desktop\tareaprogramada2-master\main.cpp
+1531190651 source:c:\users\crist\desktop\tareaprogramada2-master\main.cpp
 	<iostream>
 	"GrafoDir_MA.h"
+	"GrafoDir_LA.h"
 	"Relacion_LSE.h"
+	"GrafoNoDir_MA.h"
 	<map>
 	"Diccionario.h"
 
-1530849056 c:\users\crist\desktop\tareaprogramada2-master\include\grafodir_ma.h
+1531184916 c:\users\crist\desktop\tareaprogramada2-master\include\grafodir_ma.h
 	<string>
 	<iostream>
 
-1530763516 source:c:\users\crist\desktop\tareaprogramada2-master\src\grafodir_ma.cpp
+1531003838 source:c:\users\crist\desktop\tareaprogramada2-master\src\grafodir_ma.cpp
 	"GrafoDir_MA.h"
 
-1530763516 source:c:\users\crist\desktop\tareaprogramada2-master\src\relacion_lse.cpp
+1531003838 source:c:\users\crist\desktop\tareaprogramada2-master\src\relacion_lse.cpp
 	"Relacion_LSE.h"
 
-1530980857 c:\users\crist\desktop\tareaprogramada2-master\include\relacion_lse.h
+1531175108 c:\users\crist\desktop\tareaprogramada2-master\include\relacion_lse.h
 	"NodoL.h"
 	<iostream>
 
-1530763516 source:c:\users\crist\desktop\tareaprogramada2-master\src\nodol.cpp
+1531003838 source:c:\users\crist\desktop\tareaprogramada2-master\src\nodol.cpp
 	"NodoL.h"
 
-1530979825 c:\users\crist\desktop\tareaprogramada2-master\include\nodol.h
+1531003838 c:\users\crist\desktop\tareaprogramada2-master\include\nodol.h
 	<utility>
 
-1530763516 source:c:\users\crist\desktop\tareaprogramada2-master\src\algoritmos.cpp
+1531003838 source:c:\users\crist\desktop\tareaprogramada2-master\src\algoritmos.cpp
 	"Algoritmos.h"
 
-1530763516 c:\users\crist\desktop\tareaprogramada2-master\include\algoritmos.h
+1531003838 c:\users\crist\desktop\tareaprogramada2-master\include\algoritmos.h
 	"Relacion_LSE.h"
 	"GrafoDir_MA.h"
 
-1530763516 source:c:\users\crist\desktop\tareaprogramada2-master\src\diccionario.cpp
+1531003838 source:c:\users\crist\desktop\tareaprogramada2-master\src\diccionario.cpp
 	"Diccionario.h"
 
-1530905463 c:\users\crist\desktop\tareaprogramada2-master\include\diccionario.h
+1531166889 c:\users\crist\desktop\tareaprogramada2-master\include\diccionario.h
 	<NodoD.h>
 
-1530763516 source:c:\users\crist\desktop\tareaprogramada2-master\src\nodod.cpp
+1531003838 source:c:\users\crist\desktop\tareaprogramada2-master\src\nodod.cpp
 	"NodoD.h"
 
-1530763516 c:\users\crist\desktop\tareaprogramada2-master\include\nodod.h
+1531003838 c:\users\crist\desktop\tareaprogramada2-master\include\nodod.h
 
 1530988089 source:c:\users\b61015\downloads\tareaprogramada2-master\src\algoritmos.cpp
 	"Algoritmos.h"
@@ -110,4 +112,21 @@
 
 1530988089 c:\users\b61015\downloads\tareaprogramada2-master\nodov.h
 	"NodoA.h"
+
+1531016509 c:\users\crist\desktop\tareaprogramada2-master\include\grafodir_la.h
+	"NodoA.h"
+	"NodoV.h"
+
+1531003838 c:\users\crist\desktop\tareaprogramada2-master\include\nodoa.h
+
+1531003838 c:\users\crist\desktop\tareaprogramada2-master\include\nodov.h
+	"NodoA.h"
+
+1531103256 source:c:\users\crist\desktop\tareaprogramada2-master\src\grafonodir_ma.cpp
+	"GrafoNoDir_MA.h"
+
+1531174956 c:\users\crist\desktop\tareaprogramada2-master\include\grafonodir_ma.h
+	"GrafoDir_MA.h"
+	<string>
+	<iostream>
 
