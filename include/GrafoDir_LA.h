@@ -28,8 +28,8 @@ class GrafoDir_LA
         void ModifPeso(NodoV*, NodoV*, P);
         NodoV* PrimerVert();
         NodoV* SteVert(NodoV*);
-        NodoA* PrimerVertAdy(NodoV*);
-        NodoA* SteVertAdy(NodoV*, NodoA*);
+        NodoV* PrimerVertAdy(NodoV*);
+        NodoV* SteVertAdy(NodoV*, NodoV*);
         int NumVert();
         bool ExisteArista(NodoV*, NodoV*);
         void Imprimir();
@@ -310,9 +310,9 @@ NodoV* GrafoDir_LA::SteVert(NodoV* v)
     * @param v: Puntero al vértice en el que se está actualmente
     * @return Puntero al "primer" vértice adyacente a v en el grafo
 */
-NodoA* GrafoDir_LA::PrimerVertAdy(NodoV* v)
+NodoV* GrafoDir_LA::PrimerVertAdy(NodoV* v)
 {
-    return v->NextAdy;
+    return v->NextAdy->NextVert;
 }
 
 /**
@@ -321,9 +321,9 @@ NodoA* GrafoDir_LA::PrimerVertAdy(NodoV* v)
     * @param v2: Puntero a un vértice adyacente de v1
     * @return Puntero a un vértice adyacente de v1 diferente de v2
 */
-NodoA* GrafoDir_LA::SteVertAdy(NodoV* v1, NodoA* v2)
+NodoV* GrafoDir_LA::SteVertAdy(NodoV* v1, NodoV* v2)
 {
-    /*NodoA* aiter=v1->NextAdy;
+    NodoA* aiter=v1->NextAdy;
     while(aiter!=nullptr)
     {
         if(aiter->NextVert==v2)
@@ -334,8 +334,8 @@ NodoA* GrafoDir_LA::SteVertAdy(NodoV* v1, NodoA* v2)
                 return aiter->NextAdy->NextVert;
         }
         aiter=aiter->NextAdy;
-    }*/
-    return v2->NextAdy;
+    }
+    //return v2->NextAdy;
 }
 
 /**
