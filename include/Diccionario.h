@@ -74,7 +74,7 @@ template<typename A> void Diccionario<A>::Vaciar(){
 * @return Retorna true en caso de que este vacio, false en el contrario.
 */
 template<typename A> bool Diccionario<A>::Vacio(){
-    if(PrimerElem!=nullptr)
+    if(PrimerElem==nullptr)
     {
         return true;
     }
