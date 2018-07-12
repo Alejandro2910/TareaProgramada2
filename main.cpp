@@ -17,11 +17,11 @@ typedef int Vertice;
 typedef int Peso;
 
 using namespace std;
-
+NodoL<int, string>* iterSol;
 Relacion_LSE <string, int> Dist;
 Relacion_LSE <string, string> Cam;
-Relacion_LSE <int, int> SolAct;
-Relacion_LSE <int, int>SolFact;
+Relacion_LSE <int, string> SolAct;
+Relacion_LSE <int, string>SolFact;
 Relacion_LSE <int, int> Aristas;
 Diccionario <Vertice> VerticesVisitados;
 NodoL<string, string>* iterCam;
@@ -32,11 +32,10 @@ GrafoNoDir_MA<int> GN;
 Vertice actual;
 Vertice pivote = 0;
 Vertice AdyacentePivote = 0;
-int menor = 0;
-int ContSol = 0;
-int ContVert = 1;
-int CostoAct = 0;
-int MejorCosto = 0;
+int menor;
+int ContSol;
+int CostoAct;
+int MejorCosto;
 
 /** @brief Este algoritmo de el grado dirigido calcula el camino mas corto desde el vertice v, a todos los demas.
 *   @param Vertice v.
@@ -252,29 +251,31 @@ void Copie_Grafo(GrafoDir_MA<int> G1, GrafoDir_MA<int> &G2){
 * @param No recibe parámetros.
 */
 void Problema_del_vendedor_R(Vertice i){//Para que funcione con GrafoDir cambiar el tipo vertice a NodoV* y los -1 en este algoritmo por GN.Anterior();
-    Vertice va = GN.PrimerVertAdy(i);
+    Vertice va = GN.PrimerVertAdy(GN.Vert(SolAct.Imagen(i - 1)));
     while(va != VerticeNulo){
         if(!VerticesVisitados.Pertenece(va)){
             VerticesVisitados.Agregar(va);
-            SolAct.AgregarRelacion(ContVert, va);
-            ++ContVert;
-            CostoAct += GN.Peso(i - 1, va);
+            SolAct.AgregarRelacion(i, GN.Etiqueta(va));
+            CostoAct += GN.Peso(GN.Vert(SolAct.Imagen(i - 1)), va);
             if(i == GN.NumVert()){
-                if(GN.ExisteArista(GN.PrimerVert(), va)){
-                    CostoAct += GN.Peso(GN.PrimerVert(), va);
-                    if(CostoAct < MejorCosto){
-                        MejorCosto = CostoAct;
-                        SolFact = SolAct;
-                    }
-                    ++ContSol;
-                    CostoAct -= GN.Peso(GN.PrimerVert(), va);
+                if(GN.ExisteArista(GN.Vert(SolAct.Imagen(i - 1)), GN.Vert(SolAct.Imagen(1)))){
+                        CostoAct += GN.Peso(GN.Vert(SolAct.Imagen(i - 1)), GN.Vert(SolAct.Imagen(1)));
+                        ++ContSol;
+                        if(CostoAct<MejorCosto || MejorCosto == -1){
+                            MejorCosto = CostoAct;
+                            iterSol = SolAct.Primero();
+                            while(iterSol != nullptr){
+                                SolFact.AgregarRelacion(iterSol->elem.first, iterSol->elem.second);
+                                iterSol = iterSol->ptrSig;
+                            }
+                        }
+                        CostoAct -= GN.Peso(GN.Vert(SolAct.Imagen(i - 1)), GN.Vert(SolAct.Imagen(1)));
                 }
             }else{
-                Problema_del_vendedor_R(GN.SteVert(va));
+                Problema_del_vendedor_R(i + 1);
             }
-            CostoAct -= GN.Peso(i - 1, va);
-            --ContVert;
-            SolAct.EliminarRelacion(ContVert, va);
+            CostoAct -= GN.Peso(GN.Vert(SolAct.Imagen(i - 1)), va);
+            SolAct.EliminarRelacion(i, GN.Etiqueta(va));
             VerticesVisitados.Eliminar(va);
         }
         va = GN.SteVertAdy(i - 1, va);
@@ -291,14 +292,22 @@ void Problema_del_vendedor(){
         VerticesVisitados.Vaciar();
         SolAct.Vaciar();
         SolFact.Vaciar();
-        Problema_del_vendedor_R(GN.PrimerVert());
+        ContSol = 0;
+        CostoAct = 0;
+        MejorCosto = -1;
+
+        SolAct.AgregarRelacion(1, GN.Etiqueta(GN.PrimerVert()));
+        VerticesVisitados.Agregar(GN.PrimerVert());
+        Problema_del_vendedor_R(2);
+
         cout << "Se obtuvieron " << ContSol << " soluciones factibles.\nLa solucion de menor costo obtenida fue: ";
-        for (int i = 0; i <= SolFact.NumRel() - 1; ++i)
+        for (int i = 1; i <= GN.NumVert(); ++i)
         {
-            cout << GN.Etiqueta(SolFact.Encuentre(i)->elem.second) << ", ";
+            cout << SolFact.Imagen(i) << ", ";
         }
         cout << "con un costo de: " << MejorCosto << "." << endl;
-        }
+    }
+
 }
 
 int main()
@@ -322,13 +331,16 @@ int main()
     GN.AgregVert("C");
     GN.AgregVert("D");
     GN.AgregVert("E");
-    GN.AgregArist(G.Vert("A"), G.Vert("B"), 100);
-    GN.AgregArist(G.Vert("A"), G.Vert("C"), 30);
-    GN.AgregArist(G.Vert("B"), G.Vert("C"), 60);
-    GN.AgregArist(G.Vert("B"), G.Vert("D"), 10);
-    GN.AgregArist(G.Vert("C"), G.Vert("D"), 20);
-    GN.AgregArist(G.Vert("D"), G.Vert("E"), 50);
-    GN.AgregArist(G.Vert("E"), G.Vert("A"), 10);
+    GN.AgregArist(GN.Vert("A"), GN.Vert("B"), 3);
+    GN.AgregArist(GN.Vert("A"), GN.Vert("C"), 4);
+    GN.AgregArist(GN.Vert("A"), GN.Vert("D"), 2);
+    GN.AgregArist(GN.Vert("A"), GN.Vert("E"), 7);
+    GN.AgregArist(GN.Vert("B"), GN.Vert("C"), 4);
+    GN.AgregArist(GN.Vert("B"), GN.Vert("D"), 6);
+    GN.AgregArist(GN.Vert("B"), GN.Vert("E"), 3);
+    GN.AgregArist(GN.Vert("C"), GN.Vert("D"), 5);
+    GN.AgregArist(GN.Vert("C"), GN.Vert("E"), 8);
+    GN.AgregArist(GN.Vert("D"), GN.Vert("E"), 6);
 
     G.AgregVert("A");
     G.AgregVert("B");
@@ -351,7 +363,7 @@ int main()
     G.AgregArist(G.Vert("E"), G.Vert("D"), 20);
     G.AgregArist(G.Vert("F"), G.Vert("E"), 8);
 
-    cout<<"Bienvenido a la tarea programada, los grafos dirigido y no dirigido se crearon automaticamente. Para conocer sus\nelementos cnsulte el manual de usuario."<<endl;
+    cout<<"Bienvenido a la tarea programada, los grafos dirigido y no dirigido se crearon automaticamente. Para conocer sus\nelementos consulte el manual de usuario."<<endl;
     while(resp != -1){
         cout<<"\nQue modelo desea utilizar:\n1. Grafo Dirigido.\n2. Grafo No Dirigido.\n3. Salir"<<endl;
         cin>>resp;

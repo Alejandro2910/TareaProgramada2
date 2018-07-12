@@ -57,49 +57,50 @@
 
 1531003838 c:\users\crist\desktop\tareaprogramada2-master\include\nodod.h
 
-1530988089 source:c:\users\b61015\downloads\tareaprogramada2-master\src\algoritmos.cpp
+1531309425 source:c:\users\b61015\downloads\tareaprogramada2-master\src\algoritmos.cpp
 	"Algoritmos.h"
 
 1530988089 c:\users\b61015\downloads\tareaprogramada2-master\include\algoritmos.h
 	"Relacion_LSE.h"
 	"GrafoDir_MA.h"
 
-1530988089 c:\users\b61015\downloads\tareaprogramada2-master\include\relacion_lse.h
+1531360268 c:\users\b61015\downloads\tareaprogramada2-master\include\relacion_lse.h
 	"NodoL.h"
 	<iostream>
 
-1530988089 c:\users\b61015\downloads\tareaprogramada2-master\include\nodol.h
+1531309425 c:\users\b61015\downloads\tareaprogramada2-master\include\nodol.h
 	<utility>
 
-1530988089 c:\users\b61015\downloads\tareaprogramada2-master\include\grafodir_ma.h
+1531309425 c:\users\b61015\downloads\tareaprogramada2-master\include\grafodir_ma.h
 	<string>
 	<iostream>
 
-1530988089 source:c:\users\b61015\downloads\tareaprogramada2-master\src\diccionario.cpp
+1531309425 source:c:\users\b61015\downloads\tareaprogramada2-master\src\diccionario.cpp
 	"Diccionario.h"
 
-1530988089 c:\users\b61015\downloads\tareaprogramada2-master\include\diccionario.h
+1531309425 c:\users\b61015\downloads\tareaprogramada2-master\include\diccionario.h
 	<NodoD.h>
 
-1530988089 c:\users\b61015\downloads\tareaprogramada2-master\include\nodod.h
+1531309425 c:\users\b61015\downloads\tareaprogramada2-master\include\nodod.h
 
-1530988089 source:c:\users\b61015\downloads\tareaprogramada2-master\src\grafodir_ma.cpp
+1531309425 source:c:\users\b61015\downloads\tareaprogramada2-master\src\grafodir_ma.cpp
 	"GrafoDir_MA.h"
 
-1530988089 source:c:\users\b61015\downloads\tareaprogramada2-master\src\nodod.cpp
+1531309425 source:c:\users\b61015\downloads\tareaprogramada2-master\src\nodod.cpp
 	"NodoD.h"
 
-1530988089 source:c:\users\b61015\downloads\tareaprogramada2-master\src\nodol.cpp
+1531309425 source:c:\users\b61015\downloads\tareaprogramada2-master\src\nodol.cpp
 	"NodoL.h"
 
-1530988089 source:c:\users\b61015\downloads\tareaprogramada2-master\src\relacion_lse.cpp
+1531309425 source:c:\users\b61015\downloads\tareaprogramada2-master\src\relacion_lse.cpp
 	"Relacion_LSE.h"
 
-1531005500 source:c:\users\b61015\downloads\tareaprogramada2-master\main.cpp
+1531360404 source:c:\users\b61015\downloads\tareaprogramada2-master\main.cpp
 	<iostream>
 	"GrafoDir_MA.h"
 	"GrafoDir_LA.h"
 	"Relacion_LSE.h"
+	"GrafoNoDir_MA.h"
 	<map>
 	"Diccionario.h"
 
@@ -126,6 +127,20 @@
 	"GrafoNoDir_MA.h"
 
 1531174956 c:\users\crist\desktop\tareaprogramada2-master\include\grafonodir_ma.h
+	"GrafoDir_MA.h"
+	<string>
+	<iostream>
+
+1531309425 c:\users\b61015\downloads\tareaprogramada2-master\include\grafodir_la.h
+	"NodoA.h"
+	"NodoV.h"
+
+1531309425 c:\users\b61015\downloads\tareaprogramada2-master\include\nodoa.h
+
+1531309425 c:\users\b61015\downloads\tareaprogramada2-master\include\nodov.h
+	"NodoA.h"
+
+1531358207 c:\users\b61015\downloads\tareaprogramada2-master\include\grafonodir_ma.h
 	"GrafoDir_MA.h"
 	<string>
 	<iostream>

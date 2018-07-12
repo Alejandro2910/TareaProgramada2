@@ -227,7 +227,7 @@ class GrafoNoDir_MA
         * @return Retorna true en caso de que la arista exista, false de lo contrario.
         */
         bool ExisteArista(int v1, int v2){
-            if(MatAris[v1][v2] != AristaNula && MatAris[v2][v1] != AristaNula){
+            if(MatAris[v1][v2] != AristaNula){
                 return true;
             }else{
                 return false;
